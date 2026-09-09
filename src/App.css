@@ -181,10 +181,11 @@ p {
 .cantidad {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: #f2f2f7;
   border-radius: 12px;
   padding: 4px;
+  flex-shrink: 0;
 }
 
 .cantidad button {
@@ -206,29 +207,43 @@ p {
 }
 
 .cantidad span {
-  min-width: 22px;
+  min-width: 20px;
   text-align: center;
   font-size: 0.95rem;
   font-weight: 700;
 }
 
 .borrar {
-  white-space: nowrap;
+  width: 36px;
+  height: 36px;
+  padding: 0 !important;
+  font-size: 0 !important;
+  flex-shrink: 0;
+}
+
+.borrar::after {
+  content: "🗑️";
+  font-size: 17px;
 }
 
 @media (max-width: 520px) {
   .producto {
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    gap: 8px;
+    padding: 11px 10px;
   }
 
-  .cantidad {
-    grid-column: 2;
-    justify-self: start;
+  .cantidad button {
+    width: 28px;
+    height: 28px;
+  }
+
+  .cantidad span {
+    min-width: 18px;
   }
 
   .borrar {
-    grid-column: 2;
-    justify-self: end;
-    margin-top: -38px;
+    width: 34px;
+    height: 34px;
   }
 }
