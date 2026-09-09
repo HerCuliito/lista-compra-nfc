@@ -1,0 +1,90 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f4f4;
+  color: #222;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+main {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 32px;
+  text-align: center;
+}
+
+.formulario {
+  display: flex;
+  gap: 10px;
+}
+
+.formulario input {
+  flex: 1;
+  padding: 12px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+}
+
+.formulario button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #222;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.lista {
+  margin-top: 30px;
+}
+
+.producto {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  padding: 14px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.producto span {
+  flex: 1;
+  font-size: 18px;
+}
+
+.producto input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+
+.producto button {
+  border: none;
+  background: #eee;
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.comprado {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
