@@ -24,6 +24,25 @@ function App() {
 
   useEffect(() => {
     cargarLista()
+
+    const canal = supabase
+      .channel('lista-compra-cambios')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'shopping_items',
+        },
+        () => {
+          cargarLista()
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(canal)
+    }
   }, [])
 
   async function añadirProducto() {
