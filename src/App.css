@@ -247,3 +247,22 @@ p {
     height: 34px;
   }
 }
+
+
+.borrar-compra {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 16px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.borrar-compra:active {
+  transform: scale(0.98);
+}

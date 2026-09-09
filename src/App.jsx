@@ -114,6 +114,36 @@ function App() {
     await cargarLista()
   }
 
+  async function borrarCompra() {
+    const comprados = lista.filter((item) => item.completed)
+
+    if (comprados.length === 0) {
+      alert('No hay productos marcados como comprados.')
+      return
+    }
+
+    const confirmar = window.confirm(
+      `¿Quieres borrar ${comprados.length} producto${comprados.length === 1 ? '' : 's'} de la compra?`
+    )
+
+    if (!confirmar) return
+
+    const { error } = await supabase
+      .from('shopping_items')
+      .delete()
+      .eq('completed', true)
+
+    if (error) {
+      console.error('Error al borrar la compra:', error)
+      alert('No se pudo borrar la compra.')
+      return
+    }
+
+    await cargarLista()
+  }
+
+  const hayComprados = lista.some((item) => item.completed)
+
   return (
     <main>
       <h1>🛒 Lista de la compra</h1>
@@ -137,43 +167,55 @@ function App() {
       {cargando ? (
         <p>Cargando lista...</p>
       ) : (
-        <div className="lista">
-          {lista.map((item) => (
-            <div className="producto" key={item.id}>
-              <input
-                type="checkbox"
-                checked={item.completed}
-                onChange={() => cambiarEstado(item)}
-              />
+        <>
+          <div className="lista">
+            {lista.map((item) => (
+              <div className="producto" key={item.id}>
+                <input
+                  type="checkbox"
+                  checked={item.completed}
+                  onChange={() => cambiarEstado(item)}
+                />
 
-              <span className={item.completed ? 'comprado' : ''}>
-                {item.name}
-              </span>
+                <span className={item.completed ? 'comprado' : ''}>
+                  {item.name}
+                </span>
 
-              <div className="cantidad">
+                <div className="cantidad">
+                  <button
+                    onClick={() => cambiarCantidad(item, -1)}
+                    disabled={(item.quantity || 1) <= 1}
+                  >
+                    −
+                  </button>
+
+                  <span>{item.quantity || 1}</span>
+
+                  <button onClick={() => cambiarCantidad(item, 1)}>
+                    +
+                  </button>
+                </div>
+
                 <button
-                  onClick={() => cambiarCantidad(item, -1)}
-                  disabled={(item.quantity || 1) <= 1}
+                  className="borrar"
+                  onClick={() => borrarProducto(item.id)}
+                  aria-label={`Borrar ${item.name}`}
                 >
-                  −
-                </button>
-
-                <span>{item.quantity || 1}</span>
-
-                <button onClick={() => cambiarCantidad(item, 1)}>
-                  +
+                  Borrar
                 </button>
               </div>
+            ))}
+          </div>
 
-              <button
-                className="borrar"
-                onClick={() => borrarProducto(item.id)}
-              >
-                Borrar
-              </button>
-            </div>
-          ))}
-        </div>
+          {hayComprados && (
+            <button
+              className="borrar-compra"
+              onClick={borrarCompra}
+            >
+              Borrar compra
+            </button>
+          )}
+        </>
       )}
     </main>
   )
