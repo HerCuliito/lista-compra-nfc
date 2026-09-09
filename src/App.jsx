@@ -11,6 +11,7 @@ function App() {
     const { data, error } = await supabase
       .from('shopping_items')
       .select('*')
+      .order('completed', { ascending: true })
       .order('created_at', { ascending: true })
 
     if (error) {
@@ -69,13 +70,18 @@ function App() {
   }
 
   async function cambiarCantidad(item, cambio) {
-    const nuevaCantidad = Math.max(1, (item.quantity || 1) + cambio)
+    const nuevaCantidad = Math.max(
+      1,
+      (item.quantity || 1) + cambio
+    )
 
     if (nuevaCantidad === item.quantity) return
 
     const { error } = await supabase
       .from('shopping_items')
-      .update({ quantity: nuevaCantidad })
+      .update({
+        quantity: nuevaCantidad,
+      })
       .eq('id', item.id)
 
     if (error) {
@@ -89,7 +95,9 @@ function App() {
   async function cambiarEstado(item) {
     const { error } = await supabase
       .from('shopping_items')
-      .update({ completed: !item.completed })
+      .update({
+        completed: !item.completed,
+      })
       .eq('id', item.id)
 
     if (error) {
@@ -115,7 +123,9 @@ function App() {
   }
 
   async function borrarCompra() {
-    const comprados = lista.filter((item) => item.completed)
+    const comprados = lista.filter(
+      (item) => item.completed
+    )
 
     if (comprados.length === 0) {
       alert('No hay productos marcados como comprados.')
@@ -123,7 +133,9 @@ function App() {
     }
 
     const confirmar = window.confirm(
-      `¿Quieres borrar ${comprados.length} producto${comprados.length === 1 ? '' : 's'} de la compra?`
+      `¿Quieres borrar ${comprados.length} producto${
+        comprados.length === 1 ? '' : 's'
+      } de la compra?`
     )
 
     if (!confirmar) return
@@ -142,7 +154,9 @@ function App() {
     await cargarLista()
   }
 
-  const hayComprados = lista.some((item) => item.completed)
+  const hayComprados = lista.some(
+    (item) => item.completed
+  )
 
   return (
     <main>
@@ -155,7 +169,9 @@ function App() {
           value={producto}
           onChange={(e) => setProducto(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') añadirProducto()
+            if (e.key === 'Enter') {
+              añadirProducto()
+            }
           }}
         />
 
@@ -170,35 +186,58 @@ function App() {
         <>
           <div className="lista">
             {lista.map((item) => (
-              <div className="producto" key={item.id}>
+              <div
+                className="producto"
+                key={item.id}
+              >
                 <input
                   type="checkbox"
                   checked={item.completed}
-                  onChange={() => cambiarEstado(item)}
+                  onChange={() =>
+                    cambiarEstado(item)
+                  }
                 />
 
-                <span className={item.completed ? 'comprado' : ''}>
+                <span
+                  className={
+                    item.completed
+                      ? 'comprado'
+                      : ''
+                  }
+                >
                   {item.name}
                 </span>
 
                 <div className="cantidad">
                   <button
-                    onClick={() => cambiarCantidad(item, -1)}
-                    disabled={(item.quantity || 1) <= 1}
+                    onClick={() =>
+                      cambiarCantidad(item, -1)
+                    }
+                    disabled={
+                      (item.quantity || 1) <= 1
+                    }
                   >
                     −
                   </button>
 
-                  <span>{item.quantity || 1}</span>
+                  <span>
+                    {item.quantity || 1}
+                  </span>
 
-                  <button onClick={() => cambiarCantidad(item, 1)}>
+                  <button
+                    onClick={() =>
+                      cambiarCantidad(item, 1)
+                    }
+                  >
                     +
                   </button>
                 </div>
 
                 <button
                   className="borrar"
-                  onClick={() => borrarProducto(item.id)}
+                  onClick={() =>
+                    borrarProducto(item.id)
+                  }
                   aria-label={`Borrar ${item.name}`}
                 >
                   Borrar
