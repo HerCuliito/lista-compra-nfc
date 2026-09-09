@@ -68,6 +68,24 @@ function App() {
     await cargarLista()
   }
 
+  async function cambiarCantidad(item, cambio) {
+    const nuevaCantidad = Math.max(1, (item.quantity || 1) + cambio)
+
+    if (nuevaCantidad === item.quantity) return
+
+    const { error } = await supabase
+      .from('shopping_items')
+      .update({ quantity: nuevaCantidad })
+      .eq('id', item.id)
+
+    if (error) {
+      console.error('Error al cambiar cantidad:', error)
+      return
+    }
+
+    await cargarLista()
+  }
+
   async function cambiarEstado(item) {
     const { error } = await supabase
       .from('shopping_items')
@@ -132,7 +150,25 @@ function App() {
                 {item.name}
               </span>
 
-              <button onClick={() => borrarProducto(item.id)}>
+              <div className="cantidad">
+                <button
+                  onClick={() => cambiarCantidad(item, -1)}
+                  disabled={(item.quantity || 1) <= 1}
+                >
+                  −
+                </button>
+
+                <span>{item.quantity || 1}</span>
+
+                <button onClick={() => cambiarCantidad(item, 1)}>
+                  +
+                </button>
+              </div>
+
+              <button
+                className="borrar"
+                onClick={() => borrarProducto(item.id)}
+              >
                 Borrar
               </button>
             </div>

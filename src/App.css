@@ -177,3 +177,58 @@ p {
     font-size: 0.8rem;
   }
 }
+
+.cantidad {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f2f2f7;
+  border-radius: 12px;
+  padding: 4px;
+}
+
+.cantidad button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+
+.cantidad button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.cantidad span {
+  min-width: 22px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.borrar {
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .producto {
+    grid-template-columns: auto 1fr;
+  }
+
+  .cantidad {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .borrar {
+    grid-column: 2;
+    justify-self: end;
+    margin-top: -38px;
+  }
+}
